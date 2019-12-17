@@ -1,3 +1,7 @@
+import 'package:carros/pages/home_page.dart';
+import 'package:carros/pages/login_api.dart';
+import 'package:carros/pages/usuario.dart';
+import 'package:carros/utils/nav.dart';
 import 'package:carros/widgets/app_button.dart';
 import 'package:carros/widgets/app_text.dart';
 import 'package:flutter/material.dart';
@@ -59,7 +63,7 @@ class _LoginPageState extends State<LoginPage> {
     );
   }
 
-  void _onClickLogin() {
+  Future _onClickLogin() async {
     String login = tLogin.text;
     String senha = tSenha.text;
 
@@ -67,7 +71,13 @@ class _LoginPageState extends State<LoginPage> {
     if (!formOk) {
       return;
     }
-    print(login + ' ---' + senha);
+    Usuario usuario = await LoginApi.login(login, senha);
+    if(usuario != null) {
+      print(usuario.toString());
+      push(context, HomePage());
+    } else {
+      print("Login incorreto...");
+    }
   }
 
   String _validateLogin(String value) {
@@ -81,8 +91,8 @@ class _LoginPageState extends State<LoginPage> {
     if (value.isEmpty) {
       return "Digite o texto";
     }
-    if (value.length <= 3) {
-      return "A senha deve conter mais de 3 dígitos. Verifique";
+    if (value.length <= 2) {
+      return "A senha deve conter mais de 2 dígitos. Verifique";
     }
     return null;
   }
