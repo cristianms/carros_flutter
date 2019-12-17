@@ -1,6 +1,8 @@
+import 'package:carros/pages/api_response.dart';
 import 'package:carros/pages/home_page.dart';
 import 'package:carros/pages/login_api.dart';
 import 'package:carros/pages/usuario.dart';
+import 'package:carros/utils/alert.dart';
 import 'package:carros/utils/nav.dart';
 import 'package:carros/widgets/app_button.dart';
 import 'package:carros/widgets/app_text.dart';
@@ -35,28 +37,25 @@ class _LoginPageState extends State<LoginPage> {
         padding: EdgeInsets.all(16),
         child: ListView(
           children: <Widget>[
-            AppText(
-                "Login",
-                "Digite o login",
+            AppText("Login", "Digite o login",
                 controller: tLogin,
                 validator: _validateLogin,
                 keyboardType: TextInputType.emailAddress,
                 action: TextInputAction.next,
-                nextFocus: _focusSenha
-            ),
+                nextFocus: _focusSenha),
             SizedBox(height: 10),
-            AppText(
-                "Senha",
-                "Digite a senha",
+            AppText("Senha", "Digite a senha",
                 controller: tSenha,
                 password: true,
                 validator: _validateSenha,
                 keyboardType: TextInputType.number,
                 action: TextInputAction.done,
-                focusNode: _focusSenha
-            ),
+                focusNode: _focusSenha),
             SizedBox(height: 20),
-            AppButton("Login", onPressed: _onClickLogin,),
+            AppButton(
+              "Login",
+              onPressed: _onClickLogin,
+            ),
           ],
         ),
       ),
@@ -71,12 +70,13 @@ class _LoginPageState extends State<LoginPage> {
     if (!formOk) {
       return;
     }
-    Usuario usuario = await LoginApi.login(login, senha);
-    if(usuario != null) {
+    ApiResponse response = await LoginApi.login(login, senha);
+    if (response.ok) {
+      Usuario usuario = response.result;
       print(usuario.toString());
       push(context, HomePage());
     } else {
-      print("Login incorreto...");
+      alert(context, response.msg);
     }
   }
 
