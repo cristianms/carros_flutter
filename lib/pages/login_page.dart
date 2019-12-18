@@ -18,6 +18,7 @@ class _LoginPageState extends State<LoginPage> {
   final tLogin = TextEditingController();
   final tSenha = TextEditingController();
   final _focusSenha = FocusNode();
+  var _showProgress = false;
 
   @override
   Widget build(BuildContext context) {
@@ -55,6 +56,7 @@ class _LoginPageState extends State<LoginPage> {
             AppButton(
               "Login",
               onPressed: _onClickLogin,
+              showProgress: _showProgress,
             ),
           ],
         ),
@@ -70,21 +72,29 @@ class _LoginPageState extends State<LoginPage> {
     if (!formOk) {
       return;
     }
+
+    setState(() {
+      _showProgress = true;
+    });
+
     ApiResponse response = await LoginApi.login(login, senha);
     if (response.ok) {
       Usuario usuario = response.result;
-      print(usuario.toString());
-      push(context, HomePage());
+      //print(usuario.toString());
+      push(context, HomePage(), replace: true);
     } else {
       alert(context, response.msg);
     }
+
+    setState(() {
+      _showProgress = true;
+    });
   }
 
   String _validateLogin(String value) {
     if (value.isEmpty) {
       return "Digite o texto";
     }
-    return null;
   }
 
   String _validateSenha(String value) {
