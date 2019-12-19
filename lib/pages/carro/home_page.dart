@@ -7,31 +7,56 @@ import 'package:flutter/material.dart';
 
 import 'carros_api.dart';
 
-class HomePage extends StatelessWidget {
+class HomePage extends StatefulWidget {
+  @override
+  _HomePageState createState() => _HomePageState();
+}
+
+class _HomePageState extends State<HomePage>
+    with SingleTickerProviderStateMixin<HomePage> {
+  TabController _tabController;
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    _tabController = TabController(length: 3, vsync: this);
+    _tabController.index = 1;
+    _tabController.addListener(() {
+
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
     // TODO: implement build
-    return DefaultTabController(
-      length: 3,
-      child: Scaffold(
-        appBar: AppBar(
-          title: Text("Carros"),
-          bottom: TabBar(tabs: [
-            Tab(text: "Clássicos",),
-            Tab(text: "Esportivos",),
-            Tab(text: "Luxo",),
-          ]),
+    return Scaffold(
+      appBar: AppBar(
+        title: Text("Carros"),
+        bottom: TabBar(
+          controller: _tabController,
+          tabs: [
+            Tab(
+              text: "Clássicos",
+            ),
+            Tab(
+              text: "Esportivos",
+            ),
+            Tab(
+              text: "Luxo",
+            ),
+          ],
         ),
-        body: TabBarView(children: [
+      ),
+      body: TabBarView(
+        controller: _tabController,
+        children: [
           CarrosListView(TipoCarro.classicos),
           CarrosListView(TipoCarro.esportivos),
           CarrosListView(TipoCarro.luxo),
-        ]),
-        drawer: DrawerList(),
+        ],
       ),
+      drawer: DrawerList(),
     );
   }
-
-
 }
