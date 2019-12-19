@@ -1,7 +1,7 @@
 import 'package:carros/pages/api_response.dart';
-import 'package:carros/pages/home_page.dart';
-import 'package:carros/pages/login_api.dart';
-import 'package:carros/pages/usuario.dart';
+import 'package:carros/pages/carro/home_page.dart';
+import 'package:carros/pages/login/login_api.dart';
+import 'package:carros/pages/login/usuario.dart';
 import 'package:carros/utils/alert.dart';
 import 'package:carros/utils/nav.dart';
 import 'package:carros/widgets/app_button.dart';
@@ -22,6 +22,10 @@ class _LoginPageState extends State<LoginPage> {
 
   @override
   Widget build(BuildContext context) {
+
+    tLogin.text = "user";
+    tSenha.text = "123";
+
     // TODO: implement build
     return Scaffold(
       appBar: AppBar(
@@ -39,19 +43,21 @@ class _LoginPageState extends State<LoginPage> {
         child: ListView(
           children: <Widget>[
             AppText("Login", "Digite o login",
-                controller: tLogin,
-                validator: _validateLogin,
-                keyboardType: TextInputType.emailAddress,
-                action: TextInputAction.next,
-                nextFocus: _focusSenha),
+              controller: tLogin,
+              validator: _validateLogin,
+              keyboardType: TextInputType.emailAddress,
+              action: TextInputAction.next,
+              nextFocus: _focusSenha,
+            ),
             SizedBox(height: 10),
             AppText("Senha", "Digite a senha",
-                controller: tSenha,
-                password: true,
-                validator: _validateSenha,
-                keyboardType: TextInputType.number,
-                action: TextInputAction.done,
-                focusNode: _focusSenha),
+              controller: tSenha,
+              password: true,
+              validator: _validateSenha,
+              keyboardType: TextInputType.number,
+              action: TextInputAction.done,
+              focusNode: _focusSenha,
+            ),
             SizedBox(height: 20),
             AppButton(
               "Login",
@@ -87,7 +93,7 @@ class _LoginPageState extends State<LoginPage> {
     }
 
     setState(() {
-      _showProgress = true;
+      _showProgress = false;
     });
   }
 
