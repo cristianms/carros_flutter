@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'package:carros/pages/carro/carro.dart';
+import 'package:carros/pages/login/usuario.dart';
 import 'package:http/http.dart' as http;
 
 class TipoCarro {
@@ -10,26 +11,29 @@ class TipoCarro {
 
 class CarrosApi {
   String tipo;
+
   static Future<List<Carro>> getCarros(String tipo) async {
-    final carros = List<Carro>();
-
-//    //Delay 2 segundos
-//    await Future.delayed(Duration(seconds: 3));
-//    //Lista temporária
-//    carros.add(Carro(nome: "Chevrolet Impala Coupe", urlFoto: "http://www.livroandroid.com.br/livro/carros/classicos/Chevrolet_Impala_Coupe.png"));
-//    carros.add(Carro(nome: "Ferrari FFF", urlFoto: "http://www.livroandroid.com.br/livro/carros/esportivos/Ferrari_FF.png"));
-//    carros.add(Carro(nome: "Porsche Panamera", urlFoto: "http://www.livroandroid.com.br/livro/carros/esportivos/Porsche_Panamera.png"));
-
     try {
-      var url = 'https://carros-springboot.herokuapp.com/api/v1/carros/tipo/${tipo}';
+      Usuario user = await Usuario.get();
 
-      var response = await http.get(url);
-
-      List list = jsonDecode(response.body);
+      // Headers
+      Map<String, String> headers = {
+        "Content-type": "application/json",
+        "Authorization": "Bearer ${user.token}"
+      };
+      // URL da api de carros
+      var url =
+          'https://carros-springboot.herokuapp.com/api/v2/carros/tipo/${tipo}';
+      // Recebe o retorno da requisição
+      var response = await http.get(url, headers: headers);
+      String json = response.body;
+      // Decodifica o retorno json para um objeto List
+      List list = jsonDecode(json);
+      // Retorna o List
       return list.map<Carro>((e) => Carro.fromJson(e)).toList();
-
-    } catch(error) {
-
+    } catch (error, exception) {
+      print("$error > $exception");
+      throw error;
     }
   }
 }

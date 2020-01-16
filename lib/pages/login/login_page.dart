@@ -21,12 +21,26 @@ class _LoginPageState extends State<LoginPage> {
   var _showProgress = false;
 
   @override
-  Widget build(BuildContext context) {
+  void initState() {
+    super.initState();
+    // Ao iniciar a tela de login verificar se existe usuário logado
+    Future<Usuario> future = Usuario.get();
+    future.then((Usuario user) {
+      setState(() {
+        // Se existe usuário logado
+        if (user != null) {
+          // Direciona para a HomePage
+          push(context, HomePage(), replace: true);
+        }
+      });
+    });
+  }
 
+  @override
+  Widget build(BuildContext context) {
     tLogin.text = "user";
     tSenha.text = "123";
 
-    // TODO: implement build
     return Scaffold(
       appBar: AppBar(
         title: Text("Carros"),
@@ -42,7 +56,9 @@ class _LoginPageState extends State<LoginPage> {
         padding: EdgeInsets.all(16),
         child: ListView(
           children: <Widget>[
-            AppText("Login", "Digite o login",
+            AppText(
+              "Login",
+              "Digite o login",
               controller: tLogin,
               validator: _validateLogin,
               keyboardType: TextInputType.emailAddress,
@@ -50,7 +66,9 @@ class _LoginPageState extends State<LoginPage> {
               nextFocus: _focusSenha,
             ),
             SizedBox(height: 10),
-            AppText("Senha", "Digite a senha",
+            AppText(
+              "Senha",
+              "Digite a senha",
               controller: tSenha,
               password: true,
               validator: _validateSenha,

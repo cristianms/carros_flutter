@@ -5,13 +5,15 @@ import 'carro.dart';
 
 class CarrosListView extends StatefulWidget {
   String tipo;
+
   CarrosListView(this.tipo);
 
   @override
   _CarrosListViewState createState() => _CarrosListViewState();
 }
 
-class _CarrosListViewState extends State<CarrosListView> with AutomaticKeepAliveClientMixin<CarrosListView> {
+class _CarrosListViewState extends State<CarrosListView>
+    with AutomaticKeepAliveClientMixin<CarrosListView> {
   @override
   bool get wantKeepAlive => true;
 
@@ -27,14 +29,12 @@ class _CarrosListViewState extends State<CarrosListView> with AutomaticKeepAlive
     return FutureBuilder(
       future: carrosFuture,
       builder: (context, snapshot) {
-
-        if(snapshot.hasError) {
+        if (snapshot.hasError) {
           return Center(
             child: Text("Não foi possível realizar a busca"),
           );
-
         }
-        if(!snapshot.hasData) {
+        if (!snapshot.hasData) {
           return Center(
             child: CircularProgressIndicator(),
           );
@@ -63,7 +63,8 @@ class _CarrosListViewState extends State<CarrosListView> with AutomaticKeepAlive
                   children: <Widget>[
                     Center(
                       child: Image.network(
-                        c.urlFoto ?? "https://www.google.com/url?sa=i&rct=j&q=&esrc=s&source=images&cd=&cad=rja&uact=8&ved=2ahUKEwiIqMaH2MDmAhU6ELkGHZ2PB4EQjRx6BAgBEAQ&url=https%3A%2F%2Fwww.shutterstock.com%2Fsearch%2Fno%2Bpicture%2Bavailable%3Fimage_type%3Dillustration&psig=AOvVaw0OfG7cmU7xQYe_6V4zoXT9&ust=1576809702362213",
+                        c.urlFoto ??
+                            "https://www.google.com/url?sa=i&rct=j&q=&esrc=s&source=images&cd=&cad=rja&uact=8&ved=2ahUKEwiIqMaH2MDmAhU6ELkGHZ2PB4EQjRx6BAgBEAQ&url=https%3A%2F%2Fwww.shutterstock.com%2Fsearch%2Fno%2Bpicture%2Bavailable%3Fimage_type%3Dillustration&psig=AOvVaw0OfG7cmU7xQYe_6V4zoXT9&ust=1576809702362213",
                         width: 250,
                       ),
                     ),
@@ -77,24 +78,25 @@ class _CarrosListViewState extends State<CarrosListView> with AutomaticKeepAlive
                       "Descrição ...",
                       style: TextStyle(fontSize: 16),
                     ),
-
-                    ButtonBar(
-                        children: <Widget>[
-                          FlatButton(
-                            child: const Text('DETALHES'),
-                            onPressed: () { /* ... */ },
-                          ),
-                          FlatButton(
-                            child: const Text('COMPARTILHAR'),
-                            onPressed: () { /* ... */ },
-                          ),
-                        ]),
+                    ButtonBar(children: <Widget>[
+                      FlatButton(
+                        child: const Text('DETALHES'),
+                        onPressed: () {
+                          /* ... */
+                        },
+                      ),
+                      FlatButton(
+                        child: const Text('COMPARTILHAR'),
+                        onPressed: () {
+                          /* ... */
+                        },
+                      ),
+                    ]),
                   ],
                 ),
               ),
             );
-          }
-      ),
+          }),
     );
   }
 }

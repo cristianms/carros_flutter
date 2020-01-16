@@ -4,6 +4,8 @@ import 'package:carros/pages/carro/carros_listview.dart';
 import 'package:carros/widgets/app_button.dart';
 import 'package:carros/widgets/app_text.dart';
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:carros/utils/prefs.dart';
 
 import 'carros_api.dart';
 
@@ -18,12 +20,19 @@ class _HomePageState extends State<HomePage>
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     _tabController = TabController(length: 3, vsync: this);
-    _tabController.index = 1;
-    _tabController.addListener(() {
 
+    this._initTabs();
+  }
+
+  _initTabs() async {
+    _tabController.index = await Prefs.getInt("tabIdx");
+      print("Tab default ${_tabController.index}");
+
+    _tabController.addListener(() {
+      print("Tab clicada ${_tabController.index}");
+      Prefs.setInt("tabIdx", _tabController.index);
     });
   }
 
