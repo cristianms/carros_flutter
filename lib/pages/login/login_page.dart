@@ -1,6 +1,9 @@
+import 'dart:async';
+
 import 'package:carros/pages/api_response.dart';
 import 'package:carros/pages/carro/home_page.dart';
 import 'package:carros/pages/login/login_api.dart';
+import 'package:carros/pages/login/login_bloc.dart';
 import 'package:carros/pages/login/usuario.dart';
 import 'package:carros/utils/alert.dart';
 import 'package:carros/utils/nav.dart';
@@ -8,17 +11,24 @@ import 'package:carros/widgets/app_button.dart';
 import 'package:carros/widgets/app_text.dart';
 import 'package:flutter/material.dart';
 
+// Declaração de statefull widget
 class LoginPage extends StatefulWidget {
   @override
   _LoginPageState createState() => _LoginPageState();
 }
 
+// Declaração da classe princiál do componente
 class _LoginPageState extends State<LoginPage> {
+  // Chave para controlle do formulário
   var _formkey = GlobalKey<FormState>();
+  // Campo login
   final tLogin = TextEditingController();
+  // Campo senha
   final tSenha = TextEditingController();
+  // Define foco no campo senha
   final _focusSenha = FocusNode();
-  var _showProgress = false;
+  // Bloc
+  final _bloc = LoginBloc();
 
   @override
   void initState() {
@@ -37,10 +47,13 @@ class _LoginPageState extends State<LoginPage> {
   }
 
   @override
-  Widget build(BuildContext context) {
-    tLogin.text = "user";
-    tSenha.text = "123";
+  void dispose() {
+    super.dispose();
+    _bloc.dispose();
+  }
 
+  @override
+  Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: Text("Carros"),
@@ -77,10 +90,16 @@ class _LoginPageState extends State<LoginPage> {
               focusNode: _focusSenha,
             ),
             SizedBox(height: 20),
-            AppButton(
-              "Login",
-              onPressed: _onClickLogin,
-              showProgress: _showProgress,
+            StreamBuilder<bool>(
+              stream: _bloc.stream,
+              initialData: false,
+              builder: (context, snapshot) {
+                return AppButton(
+                  "Login",
+                  onPressed: _onClickLogin,
+                  showProgress: snapshot.data,
+                );
+              }
             ),
           ],
         ),
@@ -97,22 +116,12 @@ class _LoginPageState extends State<LoginPage> {
       return;
     }
 
-    setState(() {
-      _showProgress = true;
-    });
-
-    ApiResponse response = await LoginApi.login(login, senha);
+    ApiResponse response = await _bloc.login(login, senha);
     if (response.ok) {
-      Usuario usuario = response.result;
-      //print(usuario.toString());
       push(context, HomePage(), replace: true);
     } else {
       alert(context, response.msg);
     }
-
-    setState(() {
-      _showProgress = false;
-    });
   }
 
   String _validateLogin(String value) {

@@ -1,51 +1,79 @@
-import 'package:carros/pages/carro/carros_api.dart';
+import 'package:carros/pages/carro/carro_page.dart';
+import 'package:carros/pages/carro/carros_bloc.dart';
+import 'package:carros/utils/nav.dart';
 import 'package:flutter/material.dart';
 
 import 'carro.dart';
 
+// Declaração do statefull widget
 class CarrosListView extends StatefulWidget {
+  // Define o tipo de carro a ser carregado
   String tipo;
 
+  // Inicia a classe passando o parâmetro do tipo de carro
   CarrosListView(this.tipo);
 
   @override
   _CarrosListViewState createState() => _CarrosListViewState();
 }
 
+// Classe do componente
 class _CarrosListViewState extends State<CarrosListView>
     with AutomaticKeepAliveClientMixin<CarrosListView> {
-  @override
+  // Lista de carros
+  List<Carro> carros;
+
+  // Classe responsável pelas regras de negócio do componente
+  CarrosBloc _bloc = new CarrosBloc();
+
+  // Funciona em conjunto com "AutomaticKeepAliveClientMixin" , avisa para manter a instancia do compoenente viva
   bool get wantKeepAlive => true;
+
+  // Tipo de carro
+  String get tipo => widget.tipo;
+
+  @override
+  void initState() {
+    super.initState();
+    // chama a classe de negócio para buscar os dados da lista
+    _bloc.fetch(tipo);
+  }
 
   @override
   Widget build(BuildContext context) {
     super.build(context);
-    return _body();
-  }
-
-  _body() {
-    Future<List<Carro>> carrosFuture = CarrosApi.getCarros(this.widget.tipo);
-
-    return FutureBuilder(
-      future: carrosFuture,
+    // Observable que ficará olhando para uma resposta da lista
+    return StreamBuilder(
+      stream: _bloc.stream, // Saída da resposta
       builder: (context, snapshot) {
+        // Regras que serão executadas após receber o retorno
+        // Se a requisição falhar exibe mensagem
         if (snapshot.hasError) {
           return Center(
-            child: Text("Não foi possível realizar a busca"),
+            child: Text(
+              "Não foi possível bscar os carros",
+              style: TextStyle(
+                  color: Colors.red,
+                  fontSize: 22
+              ),
+            ),
           );
         }
+        // Enquanto os dados não vem habilita o "loader circular"
         if (!snapshot.hasData) {
           return Center(
             child: CircularProgressIndicator(),
           );
         }
-
+        // Recebe a lista de carros
         List<Carro> carros = snapshot.data;
+        // Retorna o componente listview com os dados
         return _listView(carros);
       },
     );
   }
 
+  // Compoenente responsável por exibir a lista de carros
   Container _listView(List<Carro> carros) {
     return Container(
       padding: EdgeInsets.all(16),
@@ -53,7 +81,6 @@ class _CarrosListViewState extends State<CarrosListView>
           itemCount: carros != null ? carros.length : 0,
           itemBuilder: (context, index) {
             Carro c = carros[index];
-
             return Card(
               color: Colors.grey[200],
               child: Container(
@@ -81,9 +108,7 @@ class _CarrosListViewState extends State<CarrosListView>
                     ButtonBar(children: <Widget>[
                       FlatButton(
                         child: const Text('DETALHES'),
-                        onPressed: () {
-                          /* ... */
-                        },
+                        onPressed: () => _onClickCarro(c),
                       ),
                       FlatButton(
                         child: const Text('COMPARTILHAR'),
@@ -98,5 +123,15 @@ class _CarrosListViewState extends State<CarrosListView>
             );
           }),
     );
+  }
+
+  _onClickCarro(Carro c) {
+    push(context, CarroPage(c));
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    _bloc.dispose();
   }
 }

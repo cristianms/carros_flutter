@@ -1,10 +1,6 @@
 import 'package:carros/drawer_list.dart';
-import 'package:carros/pages/carro/carro.dart';
 import 'package:carros/pages/carro/carros_listview.dart';
-import 'package:carros/widgets/app_button.dart';
-import 'package:carros/widgets/app_text.dart';
 import 'package:flutter/material.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:carros/utils/prefs.dart';
 
 import 'carros_api.dart';
