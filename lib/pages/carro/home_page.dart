@@ -24,7 +24,7 @@ class _HomePageState extends State<HomePage>
 
   _initTabs() async {
     _tabController.index = await Prefs.getInt("tabIdx");
-      print("Tab default ${_tabController.index}");
+    print("Tab default ${_tabController.index}");
 
     _tabController.addListener(() {
       print("Tab clicada ${_tabController.index}");
@@ -34,34 +34,37 @@ class _HomePageState extends State<HomePage>
 
   @override
   Widget build(BuildContext context) {
-    // TODO: implement build
-    return Scaffold(
-      appBar: AppBar(
-        title: Text("Carros"),
-        bottom: TabBar(
-          controller: _tabController,
-          tabs: [
-            Tab(
-              text: "Clássicos",
+    return MaterialApp(
+        theme: ThemeData(),
+        darkTheme: ThemeData.dark(),
+        home: Scaffold(
+          appBar: AppBar(
+            title: Text("Carros"),
+            bottom: TabBar(
+              controller: _tabController,
+              tabs: [
+                Tab(
+                  text: "Clássicos",
+                ),
+                Tab(
+                  text: "Esportivos",
+                ),
+                Tab(
+                  text: "Luxo",
+                ),
+              ],
             ),
-            Tab(
-              text: "Esportivos",
-            ),
-            Tab(
-              text: "Luxo",
-            ),
-          ],
-        ),
-      ),
-      body: TabBarView(
-        controller: _tabController,
-        children: [
-          CarrosListView(TipoCarro.classicos),
-          CarrosListView(TipoCarro.esportivos),
-          CarrosListView(TipoCarro.luxo),
-        ],
-      ),
-      drawer: DrawerList(),
+          ),
+          body: TabBarView(
+            controller: _tabController,
+            children: [
+              CarrosListView(TipoCarro.classicos),
+              CarrosListView(TipoCarro.esportivos),
+              CarrosListView(TipoCarro.luxo),
+            ],
+          ),
+          drawer: DrawerList(),
+        )
     );
   }
 }

@@ -2,7 +2,6 @@ import 'dart:async';
 
 import 'package:carros/pages/api_response.dart';
 import 'package:carros/pages/carro/home_page.dart';
-import 'package:carros/pages/login/login_api.dart';
 import 'package:carros/pages/login/login_bloc.dart';
 import 'package:carros/pages/login/usuario.dart';
 import 'package:carros/utils/alert.dart';
@@ -21,12 +20,16 @@ class LoginPage extends StatefulWidget {
 class _LoginPageState extends State<LoginPage> {
   // Chave para controlle do formulário
   var _formkey = GlobalKey<FormState>();
+
   // Campo login
   final tLogin = TextEditingController();
+
   // Campo senha
   final tSenha = TextEditingController();
+
   // Define foco no campo senha
   final _focusSenha = FocusNode();
+
   // Bloc
   final _bloc = LoginBloc();
 
@@ -54,11 +57,25 @@ class _LoginPageState extends State<LoginPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text("Carros"),
-      ),
-      body: _body(),
+    var brightness = MediaQuery
+        .of(context)
+        .platformBrightness;
+    if (brightness == Brightness.dark) {
+      print("Dark mode");
+    } else {
+      print("Normal mode");
+    }
+
+    return MaterialApp(
+      theme: ThemeData(),
+      darkTheme: ThemeData.dark(),
+      home: Scaffold(
+        appBar: AppBar(
+          title: Text("Carros"),
+        ),
+        body: _body(),
+      )
+      ,
     );
   }
 
@@ -91,15 +108,15 @@ class _LoginPageState extends State<LoginPage> {
             ),
             SizedBox(height: 20),
             StreamBuilder<bool>(
-              stream: _bloc.stream,
-              initialData: false,
-              builder: (context, snapshot) {
-                return AppButton(
-                  "Login",
-                  onPressed: _onClickLogin,
-                  showProgress: snapshot.data,
-                );
-              }
+                stream: _bloc.stream,
+                initialData: false,
+                builder: (context, snapshot) {
+                  return AppButton(
+                    "Login",
+                    onPressed: _onClickLogin,
+                    showProgress: snapshot.data,
+                  );
+                }
             ),
           ],
         ),

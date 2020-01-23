@@ -1,6 +1,7 @@
 import 'package:carros/pages/carro/carro_page.dart';
 import 'package:carros/pages/carro/carros_bloc.dart';
 import 'package:carros/utils/nav.dart';
+import 'package:carros/widgets/text-error.dart';
 import 'package:flutter/material.dart';
 
 import 'carro.dart';
@@ -28,6 +29,7 @@ class _CarrosListViewState extends State<CarrosListView>
 
   // Funciona em conjunto com "AutomaticKeepAliveClientMixin" , avisa para manter a instancia do compoenente viva
   bool get wantKeepAlive => true;
+  Brightness _brightness;
 
   // Tipo de carro
   String get tipo => widget.tipo;
@@ -37,11 +39,15 @@ class _CarrosListViewState extends State<CarrosListView>
     super.initState();
     // chama a classe de negócio para buscar os dados da lista
     _bloc.fetch(tipo);
+
   }
 
   @override
   Widget build(BuildContext context) {
     super.build(context);
+
+    _brightness = MediaQuery.of(context).platformBrightness;
+
     // Observable que ficará olhando para uma resposta da lista
     return StreamBuilder(
       stream: _bloc.stream, // Saída da resposta
@@ -49,15 +55,7 @@ class _CarrosListViewState extends State<CarrosListView>
         // Regras que serão executadas após receber o retorno
         // Se a requisição falhar exibe mensagem
         if (snapshot.hasError) {
-          return Center(
-            child: Text(
-              "Não foi possível bscar os carros",
-              style: TextStyle(
-                  color: Colors.red,
-                  fontSize: 22
-              ),
-            ),
-          );
+          return TextError("Não foi possível buscar os carros...");
         }
         // Enquanto os dados não vem habilita o "loader circular"
         if (!snapshot.hasData) {
@@ -82,7 +80,7 @@ class _CarrosListViewState extends State<CarrosListView>
           itemBuilder: (context, index) {
             Carro c = carros[index];
             return Card(
-              color: Colors.grey[200],
+              color: _brightness == Brightness.dark ? Colors.grey[800] : Colors.grey[300],
               child: Container(
                 padding: EdgeInsets.all(10),
                 child: Column(
