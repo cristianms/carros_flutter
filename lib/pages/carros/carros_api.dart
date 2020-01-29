@@ -1,5 +1,6 @@
 import 'dart:convert';
-import 'package:carros/pages/carro/carro.dart';
+import 'package:carros/pages/carros/carro.dart';
+import 'package:carros/pages/favoritos/carro-dao.dart';
 import 'package:carros/pages/login/usuario.dart';
 import 'package:http/http.dart' as http;
 
@@ -22,15 +23,22 @@ class CarrosApi {
         "Authorization": "Bearer ${user.token}"
       };
       // URL da api de carros
-      var url =
-          'https://carros-springboot.herokuapp.com/api/v2/carros/tipo/${tipo}';
+      var url = 'https://carros-springboot.herokuapp.com/api/v2/carros/tipo/${tipo}';
+      print('Fazendo requisição: $url');
       // Recebe o retorno da requisição
       var response = await http.get(url, headers: headers);
       String json = response.body;
+      // Imprime o resultado
       // Decodifica o retorno json para um objeto List
       List list = jsonDecode(json);
       // Retorna o List
-      return list.map<Carro>((e) => Carro.fromJson(e)).toList();
+      List<Carro> carros = list.map<Carro>((e) => Carro.fromJson(e)).toList();
+
+       // Salva carros da API no banco SQLite
+       // final dao = CarroDAO();
+       // carros.forEach(dao.save);
+
+      return carros;
     } catch (error, exception) {
       print("$error > $exception");
       throw error;

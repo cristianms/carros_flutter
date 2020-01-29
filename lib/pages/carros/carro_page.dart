@@ -1,5 +1,5 @@
-import 'package:carros/pages/carro/carro.dart';
-import 'package:carros/pages/carro/loripsum_api.dart';
+import 'package:carros/pages/carros/carro.dart';
+import 'package:carros/pages/carros/loripsum_api.dart';
 import 'package:carros/widgets/text.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -17,7 +17,6 @@ class _CarroPageState extends State<CarroPage> {
 
   @override
   void initState() {
-    // TODO: implement initState
     _loripsumApiBloc.fetch();
   }
 

@@ -1,7 +1,7 @@
 import 'dart:async';
 
 import 'package:carros/pages/api_response.dart';
-import 'package:carros/pages/carro/home_page.dart';
+import 'package:carros/pages/carros/home_page.dart';
 import 'package:carros/pages/login/login_bloc.dart';
 import 'package:carros/pages/login/usuario.dart';
 import 'package:carros/utils/alert.dart';
@@ -36,17 +36,6 @@ class _LoginPageState extends State<LoginPage> {
   @override
   void initState() {
     super.initState();
-    // Ao iniciar a tela de login verificar se existe usuário logado
-    Future<Usuario> future = Usuario.get();
-    future.then((Usuario user) {
-      setState(() {
-        // Se existe usuário logado
-        if (user != null) {
-          // Direciona para a HomePage
-          push(context, HomePage(), replace: true);
-        }
-      });
-    });
   }
 
   @override

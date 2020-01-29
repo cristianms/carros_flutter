@@ -1,5 +1,5 @@
 import 'package:carros/drawer_list.dart';
-import 'package:carros/pages/carro/carros_listview.dart';
+import 'package:carros/pages/carros/carros_page.dart';
 import 'package:flutter/material.dart';
 import 'package:carros/utils/prefs.dart';
 
@@ -10,8 +10,7 @@ class HomePage extends StatefulWidget {
   _HomePageState createState() => _HomePageState();
 }
 
-class _HomePageState extends State<HomePage>
-    with SingleTickerProviderStateMixin<HomePage> {
+class _HomePageState extends State<HomePage> with SingleTickerProviderStateMixin<HomePage> {
   TabController _tabController;
 
   @override
@@ -43,24 +42,18 @@ class _HomePageState extends State<HomePage>
             bottom: TabBar(
               controller: _tabController,
               tabs: [
-                Tab(
-                  text: "Clássicos",
-                ),
-                Tab(
-                  text: "Esportivos",
-                ),
-                Tab(
-                  text: "Luxo",
-                ),
+                Tab( text: "Clássicos", ),
+                Tab( text: "Esportivos", ),
+                Tab( text: "Luxo", ),
               ],
             ),
           ),
           body: TabBarView(
             controller: _tabController,
             children: [
-              CarrosListView(TipoCarro.classicos),
-              CarrosListView(TipoCarro.esportivos),
-              CarrosListView(TipoCarro.luxo),
+              CarrosPage(TipoCarro.classicos),
+              CarrosPage(TipoCarro.esportivos),
+              CarrosPage(TipoCarro.luxo),
             ],
           ),
           drawer: DrawerList(),
