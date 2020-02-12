@@ -29,6 +29,9 @@ class CarrosApi {
       var response = await http.get(url, headers: headers);
       String json = response.body;
       // Imprime o resultado
+      print('----------------');
+      print(json);
+      print('----------------');
       // Decodifica o retorno json para um objeto List
       List list = jsonDecode(json);
       // Retorna o List
