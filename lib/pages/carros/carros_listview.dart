@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:carros/pages/carros/carro_page.dart';
 import 'package:carros/pages/carros/carros_bloc.dart';
 import 'package:carros/utils/nav.dart';
@@ -10,14 +11,18 @@ import 'carro.dart';
 class CarrosListView extends StatelessWidget {
   // Lista de carros
   List<Carro> carros;
+
   // Variável para controllar o brilho
   Brightness _brightness;
+
   // Construtor que recebe a lista de carros
   CarrosListView(this.carros);
 
   @override
   Widget build(BuildContext context) {
-    _brightness = MediaQuery.of(context).platformBrightness;
+    _brightness = MediaQuery
+        .of(context)
+        .platformBrightness;
     // Observable que ficará olhando para uma resposta da lista
     return Container(
       padding: EdgeInsets.all(16),
@@ -26,16 +31,16 @@ class CarrosListView extends StatelessWidget {
           itemBuilder: (context, index) {
             Carro c = carros[index];
             return Card(
-              color: _brightness == Brightness.dark ? Colors.grey[800] : Colors.grey[300],
+              color: _brightness == Brightness.dark ? Colors.grey[800] : Colors
+                  .grey[300],
               child: Container(
                 padding: EdgeInsets.all(10),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
                     Center(
-                      child: Image.network(
-                        c.urlFoto ??
-                            "https://www.google.com/url?sa=i&rct=j&q=&esrc=s&source=images&cd=&cad=rja&uact=8&ved=2ahUKEwiIqMaH2MDmAhU6ELkGHZ2PB4EQjRx6BAgBEAQ&url=https%3A%2F%2Fwww.shutterstock.com%2Fsearch%2Fno%2Bpicture%2Bavailable%3Fimage_type%3Dillustration&psig=AOvVaw0OfG7cmU7xQYe_6V4zoXT9&ust=1576809702362213",
+                      child: CachedNetworkImage(
+                        imageUrl: c.urlFoto,
                         width: 250,
                       ),
                     ),
@@ -63,8 +68,7 @@ class CarrosListView extends StatelessWidget {
                     ]),
                   ],
                 ),
-              ),
-            );
+              ),);
           }),
     );
   }

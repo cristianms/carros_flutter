@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:carros/pages/carros/carro.dart';
 import 'package:carros/pages/carros/loripsum_api.dart';
 import 'package:carros/widgets/text.dart';
@@ -6,6 +7,7 @@ import 'package:flutter/material.dart';
 
 class CarroPage extends StatefulWidget {
   Carro carro;
+
   CarroPage(this.carro);
 
   @override
@@ -78,7 +80,9 @@ class _CarroPageState extends State<CarroPage> {
         padding: EdgeInsets.all(16),
         child: ListView(
           children: <Widget>[
-            Image.network(widget.carro.urlFoto),
+            CachedNetworkImage(
+                imageUrl: widget.carro.urlFoto
+            ),
             _bloco1(),
             Divider(),
             _bloco2(),
@@ -88,23 +92,23 @@ class _CarroPageState extends State<CarroPage> {
 
   Row _bloco1() {
     return Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: <Widget>[
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: <Widget>[
-                  text(widget.carro.nome, fontSize: 20, bold: true),
-                  text(widget.carro.tipo, fontSize: 16),
-                ],
-              ),
-              Row(
-                children: <Widget>[
-                  IconButton(icon: Icon(Icons.favorite), onPressed: onClickFavorito),
-                  IconButton(icon: Icon(Icons.share), onPressed: onClickShare),
-                ],
-              ),
-            ],
-          );
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: <Widget>[
+        Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: <Widget>[
+            text(widget.carro.nome, fontSize: 20, bold: true),
+            text(widget.carro.tipo, fontSize: 16),
+          ],
+        ),
+        Row(
+          children: <Widget>[
+            IconButton(icon: Icon(Icons.favorite), onPressed: onClickFavorito),
+            IconButton(icon: Icon(Icons.share), onPressed: onClickShare),
+          ],
+        ),
+      ],
+    );
   }
 
   _bloco2() {
