@@ -1,9 +1,7 @@
 import 'dart:async';
 
 import 'package:carros/pages/carros/carro.dart';
-import 'package:carros/pages/favoritos/base-dao.dart';
-import 'package:carros/pages/favoritos/db-helper.dart';
-import 'package:sqflite/sqflite.dart';
+import 'package:carros/utils/sql/base-dao.dart';
 
 /// Classe de acesso a dados - Data Access Object
 class CarroDAO extends BaseDAO<Carro> {
@@ -15,7 +13,7 @@ class CarroDAO extends BaseDAO<Carro> {
   // Implementa método fromMap
   @override
   Carro fromMap(Map<String, dynamic> map) {
-    return null;
+    return Carro.fromMap(map);
   }
 
   // Método responsável por buscar todos os registros de entidade POR TIPO

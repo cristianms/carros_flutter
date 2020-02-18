@@ -1,6 +1,6 @@
 import 'dart:convert';
 import 'package:carros/pages/carros/carro.dart';
-import 'package:carros/pages/favoritos/carro-dao.dart';
+import 'package:carros/pages/carros/carro-dao.dart';
 import 'package:carros/pages/login/usuario.dart';
 import 'package:http/http.dart' as http;
 
@@ -33,12 +33,7 @@ class CarrosApi {
       // Decodifica o retorno json para um objeto List
       List list = jsonDecode(json);
       // Retorna o List
-      List<Carro> carros = list.map<Carro>((e) => Carro.fromJson(e)).toList();
-
-       // Salva carros da API no banco SQLite
-       // final dao = CarroDAO();
-       // carros.forEach(dao.save);
-
+      List<Carro> carros = list.map<Carro>((e) => Carro.fromMap(e)).toList();
       return carros;
     } catch (error, exception) {
       print("$error > $exception");

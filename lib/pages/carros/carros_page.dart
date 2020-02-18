@@ -39,6 +39,7 @@ class _CarrosPageState extends State<CarrosPage>
   void initState() {
     super.initState();
     // chama a classe de negócio para buscar os dados da lista
+    print('tipo: ' + tipo);
     _bloc.fetch(tipo);
 
   }

@@ -1,7 +1,7 @@
 import 'dart:async';
 
-import 'package:carros/pages/favoritos/db-helper.dart';
-import 'package:carros/pages/favoritos/entity.dart';
+import 'package:carros/utils/sql/db-helper.dart';
+import 'package:carros/utils/sql/entity.dart';
 import 'package:sqflite/sqflite.dart';
 
 /// Classe de acesso a dados - Data Access Object
@@ -23,7 +23,7 @@ abstract class BaseDAO<T extends Entity> {
     // "conflictAlgorithm" significa que o banco irá ignorar registros duplicados
     // e não lançará erro nesse caso
     var id = await dbClient.insert(tableName, entity.toMap(), conflictAlgorithm: ConflictAlgorithm.replace);
-    print('id: $id');
+    print('id_inserido: $id');
     // Retorna o id inserido/alterado
     return id;
   }

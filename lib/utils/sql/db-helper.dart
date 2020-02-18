@@ -45,7 +45,7 @@ class DatabaseHelper {
     // Abre conexão, fazendo os upgrade de versão necessários, nesse caso está
     // na versão 2, o controle é feito no método "_onUpgrade"
     var db = await openDatabase(
-        path, version: 2, onCreate: _onCreate, onUpgrade: _onUpgrade);
+        path, version: 1, onCreate: _onCreate, onUpgrade: _onUpgrade);
     // Retorna instância
     return db;
   }

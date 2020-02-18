@@ -1,4 +1,4 @@
-import 'package:carros/pages/favoritos/entity.dart';
+import 'package:carros/utils/sql/entity.dart';
 
 class Carro extends Entity {
   int id;
@@ -21,7 +21,7 @@ class Carro extends Entity {
     this.longitude,
   });
 
-  Carro.fromJson(Map<String, dynamic> map) {
+  Carro.fromMap(Map<String, dynamic> map) {
     id = map['id'];
     nome = map['nome'];
     tipo = map['tipo'];
