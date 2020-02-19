@@ -1,5 +1,6 @@
 import 'package:carros/drawer_list.dart';
 import 'package:carros/pages/carros/carros_page.dart';
+import 'package:carros/pages/favoritos/favoritos_page.dart';
 import 'package:flutter/material.dart';
 import 'package:carros/utils/prefs.dart';
 
@@ -10,13 +11,14 @@ class HomePage extends StatefulWidget {
   _HomePageState createState() => _HomePageState();
 }
 
-class _HomePageState extends State<HomePage> with SingleTickerProviderStateMixin<HomePage> {
+class _HomePageState extends State<HomePage>
+    with SingleTickerProviderStateMixin<HomePage> {
   TabController _tabController;
 
   @override
   void initState() {
     super.initState();
-    _tabController = TabController(length: 3, vsync: this);
+    _tabController = TabController(length: 4, vsync: this);
 
     this._initTabs();
   }
@@ -42,9 +44,22 @@ class _HomePageState extends State<HomePage> with SingleTickerProviderStateMixin
             bottom: TabBar(
               controller: _tabController,
               tabs: [
-                Tab( text: "Clássicos", ),
-                Tab( text: "Esportivos", ),
-                Tab( text: "Luxo", ),
+                Tab(
+                  text: "Clássicos",
+                  icon: Icon(Icons.directions_car),
+                ),
+                Tab(
+                  text: "Esportivos",
+                  icon: Icon(Icons.directions_car),
+                ),
+                Tab(
+                  text: "Luxo",
+                  icon: Icon(Icons.directions_car),
+                ),
+                Tab(
+                  text: "Favoritos",
+                  icon: Icon(Icons.favorite),
+                ),
               ],
             ),
           ),
@@ -54,10 +69,10 @@ class _HomePageState extends State<HomePage> with SingleTickerProviderStateMixin
               CarrosPage(TipoCarro.classicos),
               CarrosPage(TipoCarro.esportivos),
               CarrosPage(TipoCarro.luxo),
+              FavoritosPage(),
             ],
           ),
           drawer: DrawerList(),
-        )
-    );
+        ));
   }
 }
