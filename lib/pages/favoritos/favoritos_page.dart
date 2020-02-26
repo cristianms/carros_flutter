@@ -8,13 +8,8 @@ import 'package:flutter/material.dart';
 
 import 'favoritos_bloc.dart';
 
-
-// Declaração do statefull widget
+/// Declaração do statefull widget
 class FavoritosPage extends StatefulWidget {
-
-  // Inicia a classe passando o parâmetro do tipo de carro
-  FavoritosPage();
-
   @override
   _FavoritosPageState createState() => _FavoritosPageState();
 }
@@ -22,29 +17,22 @@ class FavoritosPage extends StatefulWidget {
 // Classe do componente
 class _FavoritosPageState extends State<FavoritosPage>
     with AutomaticKeepAliveClientMixin<FavoritosPage> {
-  // Lista de carros
-  List<Carro> carros;
 
   // Classe responsável pelas regras de negócio do componente
-  FavoritosBloc _bloc = new FavoritosBloc();
-
+  final _bloc = new FavoritosBloc();
   // Funciona em conjunto com "AutomaticKeepAliveClientMixin" , avisa para manter a instancia do compoenente viva
   bool get wantKeepAlive => true;
-  Brightness _brightness;
 
   @override
   void initState() {
     super.initState();
-    // chama a classe de negócio para buscar os dados da lista
+    // Chama a classe de negócio para buscar os dados da lista
     _bloc.fetch();
-
   }
 
   @override
   Widget build(BuildContext context) {
     super.build(context);
-
-    _brightness = MediaQuery.of(context).platformBrightness;
 
     // Observable que ficará olhando para uma resposta da lista
     return StreamBuilder(

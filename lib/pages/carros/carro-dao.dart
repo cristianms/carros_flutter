@@ -17,10 +17,11 @@ class CarroDAO extends BaseDAO<Carro> {
   }
 
   // Método responsável por buscar todos os registros de entidade POR TIPO
-  Future<List<Carro>> findAllByTipo(String tipo) async {
-    final dbClient = await db;
-    final list = await dbClient.rawQuery('select * from $tableName where tipo =? ',[tipo]);
-    return list.map<Carro>((json) => fromMap(json)).toList();
+  Future<List<Carro>> findAllByTipo(String tipo) {
+//    final dbClient = await db;
+//    final list = await dbClient.rawQuery('select * from $tableName where tipo =? ',[tipo]);
+//    return list.map<Carro>((json) => fromMap(json)).toList();
+    return query('select * from $tableName where tipo =? ',[tipo]);
   }
 
 }

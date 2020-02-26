@@ -30,25 +30,20 @@ class _CarrosPageState extends State<CarrosPage>
 
   // Funciona em conjunto com "AutomaticKeepAliveClientMixin" , avisa para manter a instancia do compoenente viva
   bool get wantKeepAlive => true;
-  Brightness _brightness;
-
   // Tipo de carro
   String get tipo => widget.tipo;
 
   @override
   void initState() {
     super.initState();
-    // chama a classe de negócio para buscar os dados da lista
-    print('tipo: ' + tipo);
+    // Chama a classe de negócio para buscar os dados da lista
+    // print('tipo: ' + tipo);
     _bloc.fetch(tipo);
-
   }
 
   @override
   Widget build(BuildContext context) {
     super.build(context);
-
-    _brightness = MediaQuery.of(context).platformBrightness;
 
     // Observable que ficará olhando para uma resposta da lista
     return StreamBuilder(
