@@ -1,7 +1,9 @@
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:carros/pages/carros/carro-form-page.dart';
 import 'package:carros/pages/carros/carro.dart';
 import 'package:carros/pages/carros/loripsum_api.dart';
 import 'package:carros/pages/favoritos/favorito-service.dart';
+import 'package:carros/utils/nav.dart';
 import 'package:carros/widgets/text.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -76,7 +78,7 @@ class _CarroPageState extends State<CarroPage> {
   void _onClickPopupMenu(String value) {
     switch (value) {
       case "Editar":
-        print(value);
+        push(context, CarroFormPage(carro: carro));
         break;
       case "Deletar":
         print(value);

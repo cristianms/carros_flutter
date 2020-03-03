@@ -3,21 +3,28 @@ import 'package:carros/pages/carros/carro.dart';
 import 'package:carros/pages/carros/carro-dao.dart';
 import 'package:carros/pages/login/usuario.dart';
 import 'package:http/http.dart' as http;
+import 'dart:convert' as convert;
 
+import '../api_response.dart';
+
+/// Definição dos tipos de carros
 class TipoCarro {
   static final String classicos = "classicos";
   static final String esportivos = "esportivos";
   static final String luxo = "luxo";
 }
 
+/// Classe responsável por realizar as requisições relacionadas a entidade carro
 class CarrosApi {
+  // Tipo do carro
   String tipo;
 
+  // Método responsável por busar os carros no servidor
   static Future<List<Carro>> getCarros(String tipo) async {
     try {
       Usuario user = await Usuario.get();
 
-      // Headers
+      // Monta os headers da requisição, necessário obter e repassar o token
       Map<String, String> headers = {
         "Content-type": "application/json",
         "Authorization": "Bearer ${user.token}"
@@ -38,6 +45,50 @@ class CarrosApi {
     } catch (error, exception) {
       print("$error > $exception");
       throw error;
+    }
+  }
+
+  static Future<ApiResponse<bool>> save(Carro c) async {
+    try {
+      // Busca o usuário logado
+      Usuario user = await Usuario.get();
+      // Monta headers da requisição
+      Map<String, String> headers = {
+        "Content-Type": "application/json",
+        "Authorization": "Bearer ${user.token}"
+      };
+      // URL
+      var url = 'https://carros-springboot.herokuapp.com/api/v2/carros';
+      if (c.id != null) {
+        url += '/${c.id}';
+      }
+
+      print('POST/PUT > $url');
+      String json = c.toJson();
+      // Resposta
+      var resposta = await (
+          c.id == null ?
+          http.post(url, headers: headers, body: json) :
+          http.put(url, headers: headers, body: json)
+      );
+      print('Response status: ${resposta.statusCode}');
+      print('Response body: ${resposta.body}');
+      if (resposta.statusCode == 200 || resposta.statusCode == 201) {
+        Map mapResposta = convert.json.decode(resposta.body);
+        Carro carro = Carro.fromMap(mapResposta);
+        print('Novo carro: ${carro.id}');
+        return ApiResponse.ok(true);
+      }
+
+      if (resposta.body == null || resposta.body.isEmpty) {
+        return ApiResponse.error('Não foi possível salvar o carro');
+      }
+
+      Map mapResposta = convert.json.decode(resposta.body);
+      return ApiResponse.error(mapResposta['error']);
+    } catch (erro) {
+      print(erro);
+      return ApiResponse.error('Não foi possível salvar o carro');
     }
   }
 }
